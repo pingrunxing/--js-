@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    //         主要设计知识点：面向对象及JS运行机制（同步 异步 任务队列 事件循环）
+    // 请实现函数Student，此函数按照以下方式调用：
+    // 1.Student('fxy')
+    // =>输出：
+    // Hi! This is fxy!
+
+    // 2.Student('fxy').sleep(3).study('javascript')
+    // =>输出：
+    // Hi! This is fxy!
+    // //等待3秒
+    // Wake up after 3
+    // Study javascript~
+
+    // 3.Student('fxy').study('javascript').study('Vue')
+    // =>输出：
+    // Hi! This is fxy!
+    // Study javascript~
+    // Study Vue~
+
+    // 4.Student('fxy').sleepFirst(5).study('Ajax')
+    // =>输出
+    // //等待5s
+    // Wake up after 5
+    // Hi! This is fxy!
+    // Study Ajax
+    
+    function Student(name){
+    let _person = {
+        sayHi : function () {
+            queue.push(() => {
+                    console.log('Hi! This is ' + name + '!');
+                    this.next();
+            })
+        },
+        study : function (course) {
+            queue.push(() => {
+                    console.log('Study ' + course );
+                    this.next();
+            })
+            return this;
+        },
+        sleep : function (time) {
+            queue.push(() => {
+                console.log("等待" + time + "s");
+                setTimeout(() => {
+                    console.log("wake up after "+ time);
+                    this.next();
+                }, time * 1000)
+            })
+            return this;
+        },
+        sleepFirst : function (time) {
+            queue.unshift(() => {
+                console.log("等待" + time + "s");
+                setTimeout(() => {
+                    console.log("wake up after " + time);
+                    this.next();
+                }, time * 1000)
+            })
+            return this;
+        },
+        next : function () {
+            let fn = queue.shift();
+            fn && fn();
+        }
+    }
+    let queue = [];
+    _person.sayHi();
+    setTimeout(function () {
+        _person.next();
+    })
+    return _person;
+}
+
+
+ //Student('fxy');
+ Student('fxy').sleep(3).study('javascript');
+// Student('fxy').study('javascript').study('Vue');
+ //Student('fxy').sleepFirst(5).study('Ajax');
+
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

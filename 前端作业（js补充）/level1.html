@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        window.onload = function () {
+            let str = "I'm?���going�??�to�?�take�??�a?�trip�?�to��?daocheng�?�on��May Day."
+            let patt = /�{1,}\?[a-z]/g          //?前面要加\
+            patt.test(str)
+            i =  str[patt.lastIndex-1].toUpperCase()
+            str = str.replace(patt,' '+i)
+            str = str.replace(/[^A-z|']+/g, ' ' )
+            console.log(str); // 'I'm going to take a trip to Daocheng on May Day.'
+
+        }
+//         去除特殊字符和问号，只保留字母和单引号，对于特殊符号后面问号跟着的,如果是字母就转换成大写.
+// 即正确输出是 'I'm going to take a trip to Daocheng on May Day.'toLocaleUpperCase
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
